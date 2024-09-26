@@ -330,5 +330,21 @@
 ;; Disable the damn thing by making it disposable.
 (setq custom-file (make-temp-file "emacs-custom-"))
 
-
-
+;; Denote
+(use-package denote
+  :config
+  (setq denote-directory (expand-file-name "~/testing/")
+	denote-known-keywords '("emacs" "denote" "testing")
+	denote-file-type 'text)
+  (add-hook 'dired-mode-hook #'denote-dired-mode)
+  :bind
+  ("C-c d f" . denote-type)
+  ("C-c d d" . denote-date)
+  ("C-c d r" . denote-rename-file)
+  ("C-c d l" . denote-link)
+  ("C-c d i" . denote-link-after-creating)
+  ("C-c d b" . denote-backlinks)
+  ("C-c d z" . denote-signature)
+  )
+;; my stuff
+(global-set-key (kbd "C-c o v") #'visible-mode)
