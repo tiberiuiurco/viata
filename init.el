@@ -346,5 +346,6 @@
   ("C-c d b" . denote-backlinks)
   ("C-c d z" . denote-signature)
   )
+(use-package altcaps)
 ;; my stuff
 (global-set-key (kbd "C-c o v") #'visible-mode)
