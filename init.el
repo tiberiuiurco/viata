@@ -346,6 +346,11 @@
   ("C-c d b" . denote-backlinks)
   ("C-c d z" . denote-signature)
   )
-(use-package altcaps)
 ;; my stuff
 (global-set-key (kbd "C-c o v") #'visible-mode)
+(global-visual-line-mode t)
+
+(global-display-fill-column-indicator-mode t)
+(setq-default fill-column 78)
+(setq-default display-fill-column-indicator t)
+;;(setq-default display-fill-column-indicator-character ?|)
