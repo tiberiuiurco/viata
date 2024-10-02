@@ -213,6 +213,7 @@ Corfu + treesitter + flymake
 #+end_src
 
 * ORG MODE
+** ORG CONFIG
 #+begin_src emacs-lisp
 (require 'org)
 (use-package org-modern
@@ -339,7 +340,12 @@ Corfu + treesitter + flymake
              (auto-revert-mode 1)))
 
 #+end_src
-
+** OLIVETTI
+#+begin_src emacs-lisp
+(use-package olivetti
+ :hook (org-mode . olivetti-mode)
+)
+#+end_src
 * ORG ROAM
 #+begin_src emacs-lisp
   (use-package org-roam

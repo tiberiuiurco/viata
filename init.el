@@ -315,6 +315,10 @@
           '(lambda ()
              (auto-revert-mode 1)))
 
+(use-package olivetti
+ :hook (org-mode . olivetti-mode)
+)
+
 (use-package org-roam
   :commands (org-roam-node-list)
   :init
