@@ -346,6 +346,15 @@ Corfu + treesitter + flymake
  :hook (org-mode . olivetti-mode)
 )
 #+end_src
+** ORG AUTO TANGLE
+Automatically tangle the org file ~on save~.
+Set ~#+auto_tangle: t~ in the header of the file.
+
+#+begin_src emacs-lisp
+  (use-package org-auto-tangle
+    :defer t
+    :hook (org-mode . org-auto-tangle-mode))
+#+end_src
 * ORG ROAM
 #+begin_src emacs-lisp
   (use-package org-roam

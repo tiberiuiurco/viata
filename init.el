@@ -319,6 +319,10 @@
  :hook (org-mode . olivetti-mode)
 )
 
+(use-package org-auto-tangle
+  :defer t
+  :hook (org-mode . org-auto-tangle-mode))
+
 (use-package org-roam
   :commands (org-roam-node-list)
   :init
