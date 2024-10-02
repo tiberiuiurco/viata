@@ -1,18 +1,19 @@
 (require 'use-package)
-;;(add-to-list 'package-archives '("gnu"   . "https://elpa.gnu.org/packages/"))
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
-(package-initialize)
 (setq use-package-always-ensure t
-      use-package-expand-minimally t ;; disables startup warnings and makes messages buffer minimal
+      use-package-expand-minimally t
       )
 
-;; org
 (dolist (path '("scripts"))
   (add-to-list 'load-path (locate-user-emacs-file path)))
-(load-file "~/.emacs.d/org.el")
 
+(use-package org-tempo
+:ensure nil
+:config
+(add-to-list 'org-structure-template-alist '("sh" . "src shell"))
+(add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
+(add-to-list 'org-structure-template-alist '("py" . "src python")))
 
-;; Completion
 (use-package vertico
   :custom
   (vertico-cycle t) 
@@ -25,7 +26,7 @@
 
 (use-package marginalia
   :bind (:map minibuffer-local-map
-	      ("M-A" . marginalia-cycle))
+              ("M-A" . marginalia-cycle))
   :init
   (marginalia-mode))
 
@@ -42,57 +43,57 @@
 (use-package consult
   ;; Replace bindings. Lazily loaded by `use-package'.
   :bind (;; C-c bindings in `mode-specific-map'
-	 ("C-c M-x" . consult-mode-command)
-	 ("C-c h" . consult-history)
-	 ("C-c k" . consult-kmacro)
-	 ("C-c m" . consult-man)
-	 ("C-c i" . consult-info)
-	 ([remap Info-search] . consult-info)
-	 ;; C-x bindings in `ctl-x-map'
-	 ("C-x M-:" . consult-complex-command)     ;; orig. repeat-complex-command
-	 ("C-x b" . consult-buffer)                ;; orig. switch-to-buffer
-	 ("C-x 4 b" . consult-buffer-other-window) ;; orig. switch-to-buffer-other-window
-	 ("C-x 5 b" . consult-buffer-other-frame)  ;; orig. switch-to-buffer-other-frame
-	 ("C-x t b" . consult-buffer-other-tab)    ;; orig. switch-to-buffer-other-tab
-	 ("C-x r b" . consult-bookmark)            ;; orig. bookmark-jump
-	 ("C-x p b" . consult-project-buffer)      ;; orig. project-switch-to-buffer
-	 ;; Custom M-# bindings for fast register access
-	 ("M-#" . consult-register-load)
-	 ("M-'" . consult-register-store)          ;; orig. abbrev-prefix-mark (unrelated)
-	 ("C-M-#" . consult-register)
-	 ;; Other custom bindings
-	 ("M-y" . consult-yank-pop)                ;; orig. yank-pop
-	 ;; M-g bindings in `goto-map'
-	 ("M-g e" . consult-compile-error)
-	 ("M-g f" . consult-flymake)               ;; Alternative: consult-flycheck
-	 ("M-g g" . consult-goto-line)             ;; orig. goto-line
-	 ("M-g M-g" . consult-goto-line)           ;; orig. goto-line
-	 ("M-g o" . consult-outline)               ;; Alternative: consult-org-heading
-	 ("M-g m" . consult-mark)
-	 ("M-g k" . consult-global-mark)
-	 ("M-g i" . consult-imenu)
-	 ("M-g I" . consult-imenu-multi)
-	 ;; M-s bindings in `search-map'
-	 ("M-s d" . consult-find)                  ;; Alternative: consult-fd
-	 ("M-s c" . consult-locate)
-	 ("M-s g" . consult-grep)
-	 ("M-s G" . consult-git-grep)
-	 ("M-s r" . consult-ripgrep)
-	 ("M-s l" . consult-line)
-	 ("M-s L" . consult-line-multi)
-	 ("M-s k" . consult-keep-lines)
-	 ("M-s u" . consult-focus-lines)
-	 ;; Isearch integration
-	 ("M-s e" . consult-isearch-history)
-	 :map isearch-mode-map
-	 ("M-e" . consult-isearch-history)         ;; orig. isearch-edit-string
-	 ("M-s e" . consult-isearch-history)       ;; orig. isearch-edit-string
-	 ("M-s l" . consult-line)                  ;; needed by consult-line to detect isearch
-	 ("M-s L" . consult-line-multi)            ;; needed by consult-line to detect isearch
-	 ;; Minibuffer history
-	 :map minibuffer-local-map
-	 ("M-s" . consult-history)                 ;; orig. next-matching-history-element
-	 ("M-r" . consult-history))                ;; orig. previous-matching-history-element
+         ("C-c M-x" . consult-mode-command)
+         ("C-c h" . consult-history)
+         ("C-c k" . consult-kmacro)
+         ("C-c m" . consult-man)
+         ("C-c i" . consult-info)
+         ([remap Info-search] . consult-info)
+         ;; C-x bindings in `ctl-x-map'
+         ("C-x M-:" . consult-complex-command)     ;; orig. repeat-complex-command
+         ("C-x b" . consult-buffer)                ;; orig. switch-to-buffer
+         ("C-x 4 b" . consult-buffer-other-window) ;; orig. switch-to-buffer-other-window
+         ("C-x 5 b" . consult-buffer-other-frame)  ;; orig. switch-to-buffer-other-frame
+         ("C-x t b" . consult-buffer-other-tab)    ;; orig. switch-to-buffer-other-tab
+         ("C-x r b" . consult-bookmark)            ;; orig. bookmark-jump
+         ("C-x p b" . consult-project-buffer)      ;; orig. project-switch-to-buffer
+         ;; Custom M-# bindings for fast register access
+         ("M-#" . consult-register-load)
+         ("M-'" . consult-register-store)          ;; orig. abbrev-prefix-mark (unrelated)
+         ("C-M-#" . consult-register)
+         ;; Other custom bindings
+         ("M-y" . consult-yank-pop)                ;; orig. yank-pop
+         ;; M-g bindings in `goto-map'
+         ("M-g e" . consult-compile-error)
+         ("M-g f" . consult-flymake)               ;; Alternative: consult-flycheck
+         ("M-g g" . consult-goto-line)             ;; orig. goto-line
+         ("M-g M-g" . consult-goto-line)           ;; orig. goto-line
+         ("M-g o" . consult-outline)               ;; Alternative: consult-org-heading
+         ("M-g m" . consult-mark)
+         ("M-g k" . consult-global-mark)
+         ("M-g i" . consult-imenu)
+         ("M-g I" . consult-imenu-multi)
+         ;; M-s bindings in `search-map'
+         ("M-s d" . consult-find)                  ;; Alternative: consult-fd
+         ("M-s c" . consult-locate)
+         ("M-s g" . consult-grep)
+         ("M-s G" . consult-git-grep)
+         ("M-s r" . consult-ripgrep)
+         ("M-s l" . consult-line)
+         ("M-s L" . consult-line-multi)
+         ("M-s k" . consult-keep-lines)
+         ("M-s u" . consult-focus-lines)
+         ;; Isearch integration
+         ("M-s e" . consult-isearch-history)
+         :map isearch-mode-map
+         ("M-e" . consult-isearch-history)         ;; orig. isearch-edit-string
+         ("M-s e" . consult-isearch-history)       ;; orig. isearch-edit-string
+         ("M-s l" . consult-line)                  ;; needed by consult-line to detect isearch
+         ("M-s L" . consult-line-multi)            ;; needed by consult-line to detect isearch
+         ;; Minibuffer history
+         :map minibuffer-local-map
+         ("M-s" . consult-history)                 ;; orig. next-matching-history-element
+         ("M-r" . consult-history))                ;; orig. previous-matching-history-element
 
   ;; Enable automatic preview at point in the *Completions* buffer. This is
   ;; relevant when you use the default completion UI.
@@ -105,7 +106,7 @@
   ;; preview for `consult-register', `consult-register-load',
   ;; `consult-register-store' and the Emacs built-ins.
   (setq register-preview-delay 0.5
-	register-preview-function #'consult-register-format)
+        register-preview-function #'consult-register-format)
 
   ;; Optionally tweak the register preview window.
   ;; This adds thin lines, sorting and hides the mode line of the window.
@@ -113,7 +114,7 @@
 
   ;; Use Consult to select xref locations with preview
   (setq xref-show-xrefs-function #'consult-xref
-	xref-show-definitions-function #'consult-xref)
+        xref-show-definitions-function #'consult-xref)
 
   ;; Configure other variables and modes in the :config section,
   ;; after lazily loading the package.
@@ -144,9 +145,7 @@
   ;; (keymap-set consult-narrow-map (concat consult-narrow-key " ?") #'consult-narrow-help)
   )
 
-(use-package wgrep ;; Makes grep buffers editable
-  )
-
+(use-package wgrep) ;; Makes grep buffers editable
 
 (use-package corfu
   ;; Optional customizations
@@ -192,7 +191,130 @@
  
 (require 'flymake)
 
-;; Org Roam
+(require 'org)
+(use-package org-modern
+  :hook (org-mode . org-modern-mode))
+
+(setq org-log-done 'time)
+(setq org-agenda-start-with-log-mode t)
+(setq org-agenda-todo-ignore-with-date t)
+(setq org-agenda-todo-ignore-timestamp t)
+(setq org-agenda-todo-ignore-scheduled t)
+(setq org-agenda-todo-ignore-deadlines t)
+
+(setq org-agenda-show-inherited-tags t) ;; already default
+(setq org-agenda-tags-column -100)
+(setq org-agenda-view-columns-initially nil)
+(setq org-agenda-start-with-clockreport-mode t)
+(setq org-agenda-start-with-log-mode nil)
+
+(setq org-log-done nil
+      org-log-into-drawer t
+      org-agenda-skip-scheduled-if-done t)
+
+(setq org-agenda-window-setup 'current-window)
+
+;; mine
+(setq backup-directory-alist '((".*" . "~/.Trash")))
+(setq initial-major-mode 'org-mode)
+(setq initial-scratch-message "")
+
+(setq org-directory (expand-file-name "~/Documents/Files/3 Org/gtd/"))
+(setq org-agenda-files `(,org-directory))
+
+(setq org-todo-keywords
+      '((sequence "TODO(t)" "NEXT(n)" "WAITING(w)" "|" "DONE(d!)" "CANCELLED(c)")
+        ))
+(setq org-tag-alist
+      '((:startgroup)
+                                        ; Put mutually exclusive tags here
+        (:endgroup)
+        ;; Places
+        ("@home" . ?H)
+        ("@work" . ?W)
+        ("@uni" . ?U)
+
+        ;; Devices
+        ("@computer" . ?C)
+        ("@phone" . ?P)
+
+        ;; Activities
+        ("@planning" . ?n)
+        ("jobhunting" . ?j)
+        ("@programming" . ?p)
+        ("@writing" . ?w)
+        ("@studying" . ?s)
+        ("@email" . ?e)
+        ("@calls" . ?c)
+        ("@explore" .?x)
+        ("@emacs" .?m)
+        ("@errands" . ?r)))
+
+(setq org-agenda-custom-commands
+      '(("d" "Dashboard"
+         ((agenda "" ((org-deadline-warning-days 7) (org-agenda-span 7) (org-agenda-start-day "today")))
+          (tags-todo "+PRIORITY=\"A\"" ((org-agenda-overriding-header "High Priority Tasks")))
+          (tags-todo "@lab" ((org-agenda-overriding-header "Lab")
+                             (org-agenda-skip-function '(org-agenda-skip-entry-if 'timestamp))))
+          (tags-todo "@uni" ((org-agenda-overriding-header "University")
+                             (org-agenda-skip-function '(org-agenda-skip-entry-if 'timestamp))))
+          (tags-todo "-@lab-@uni-roam/TODO"
+                     ((org-agenda-overriding-header "Next Tasks")
+                      (org-agenda-skip-function '(org-agenda-skip-entry-if 'timestamp))))
+          ;; (tags-todo "roam" ((org-agenda-overriding-header "Roam")))
+          ))
+
+        ("l" "Daily Life"
+         ((agenda "" ((org-deadline-warning-days 7) (org-agenda-span 7) (org-agenda-start-day "today")))
+          (tags-todo "@uni/NEXT" ((org-agenda-overriding-header "University")))
+          (tags-todo "-@lab-@uni-roam/NEXT"
+                     ((org-agenda-overriding-header "Next Tasks")))
+          ;; (tags-todo "roam" ((org-agenda-overriding-header "Roam")))
+          ))
+
+        ("n" "Next Tasks"
+         ((todo "NEXT"
+                ((org-agenda-overriding-header "Next Tasks")))))
+
+        ("r" "Roam"
+         ((tags-todo "roam" ((org-agenda-overriding-header "Roam")))))
+        ("u" "Untagged Tasks" tags-todo "-{.*}")
+        ("w" "Weekly Review"
+         ((agenda ""
+                  ((org-agenda-overriding-header "Completed Tasks")
+                   (org-agenda-skip-function '(org-agenda-skip-entry-if 'nottodo 'done))
+                   (org-agenda-span 'week)))))
+	))
+
+(setq org-agenda-prefix-format '((agenda . " %i %-12:c%?-12t%-6e% s")
+                                 (todo . " %i %-12:c %-6e")
+                                 (tags . " %i %-12:c")
+                                 (search . " %i %-12:c")))
+
+(setq org-refile-targets
+      '(("~/Documents/Files/3 Org/gtd/gtd.org" :maxlevel . 3)))
+
+;; Save Org buffers after refiling!
+(advice-add 'org-refile :after 'org-save-all-org-buffers)
+
+(setq org-capture-templates
+      `(("t" "Tasks / Projects")
+        ("tt" "Task Inbox BACKLOG" entry (file+olp "~/Documents/Files/3 Org/gtd/gtd.org" "Tasks")
+         "* BACKLOG %?\n  %U\n  %a\n  %i" :empty-lines 1)
+        ("tn" "Task Inbox NEXT" entry (file+olp "~/Documents/Files/3 Org/gtd/gtd.org" "Tasks")
+         "* NEXT %?\n  %U\n  %a\n  %i" :empty-lines 1)
+        ("ts" "Task Tickler Scheduled" entry (file+olp "~/Documents/Files/3 Org/gtd/gtd.org" "Tickler")
+         "* TODO %?\n  %U\n  %a\n  %i" :empty-lines 1)))
+
+(require 'org-checklist)
+
+(global-set-key (kbd "C-c a") #'org-agenda)
+(global-set-key (kbd "C-c c") #'org-capture)
+
+(add-hook 'org-mode-hook
+          '(lambda ()
+             (auto-revert-mode 1)))
+
 (use-package org-roam
   :commands (org-roam-node-list)
   :init
@@ -251,7 +373,7 @@
   (setq org-roam-ui-sync-theme t
         org-roam-ui-follow t
         org-roam-ui-update-on-save t
-        org-roam-ui-open-on-start t))
+        org-roam-ui-open-on-start nil))
 
 (use-package consult-org-roam
   :init
@@ -279,11 +401,16 @@
   ("C-c n l" . consult-org-roam-forward-links)
   ("C-c n r" . consult-org-roam-search))
 
-;; applications
-;;; magit
 (use-package magit)
 
-;; UI
+(use-package elfeed
+  :config
+  ;; Somewhere in your .emacs file
+  (setq elfeed-feeds
+	'("https://protesilaos.com/master.xml"
+	  "https://planet.emacslife.com/atom.xml"))
+  )
+
 (load-theme 'modus-vivendi)
 
 (use-package emacs
@@ -327,10 +454,8 @@
   (add-hook 'minibuffer-setup-hook #'cursor-intangible-mode)
   )
 
-;; Disable the damn thing by making it disposable.
 (setq custom-file (make-temp-file "emacs-custom-"))
 
-;; Denote
 (use-package denote
   :config
   (setq denote-directory (expand-file-name "~/testing/")
@@ -346,7 +471,7 @@
   ("C-c d b" . denote-backlinks)
   ("C-c d z" . denote-signature)
   )
-;; my stuff
+
 (global-set-key (kbd "C-c o v") #'visible-mode)
 (global-visual-line-mode t)
 

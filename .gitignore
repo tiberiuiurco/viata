@@ -6,6 +6,7 @@
 *.elc
 auto-save-list
 tramp
+/dakymj7history
 .\#*
 
 # Org-mode
@@ -47,4 +48,11 @@ flycheck_*.el
 # network security
 /network-security.data
 
-/eln-cache/
+/eln-cache/x
+
+!scripts
+!/scripts/*
+
+!readme.org
+
+history
