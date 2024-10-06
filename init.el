@@ -193,7 +193,7 @@
 
 (require 'org)
 (use-package org-modern
-  :hook (org-mode . org-modern-mode))
+  :hook (org-mode . global-org-modern-mode))
 
 (setq org-log-done 'time)
 (setq org-agenda-start-with-log-mode t)
@@ -316,7 +316,7 @@
              (auto-revert-mode 1)))
 
 (use-package olivetti
- :hook (org-mode . olivetti-mode)
+ :hook (org-agenda-mode . olivetti-mode)
 )
 
 (use-package org-auto-tangle
@@ -421,6 +421,57 @@
 
 (load-theme 'modus-vivendi)
 
+(set-face-attribute 'default nil
+                    :font "Hack Nerd Font"
+                    :height 140
+                    :weight 'bold)
+(set-face-attribute 'variable-pitch nil
+                    :font "Hack Nerd Font"
+                    :height 140
+                    :weight 'bold)
+(set-face-attribute 'fixed-pitch nil
+                    :font "Hack Nerd Font"
+                    :height 140
+                    :weight 'bold)
+
+;; Makes commented text and keywords italics.
+;; This is working in emacsclient but not emacs.
+;; Your font must have an italic face available.
+(set-face-attribute 'font-lock-comment-face nil
+                    :slant 'italic)
+(set-face-attribute 'font-lock-keyword-face nil
+                    :slant 'italic)
+
+(add-to-list 'default-frame-alist '(font . "Hack Nerd Font-14"))
+
+(set-frame-parameter nil 'alpha-background 70) ; For current frame
+(add-to-list 'default-frame-alist '(alpha-background . 70)) ; For all new frames henceforth
+
+(setq frame-resize-pixelwise t
+      ;;       frame-inhibit-implied-resize t
+      frame-title-format '("%b")
+      ;;       ring-bell-function 'ignore
+      ;;       use-dialog-box t ; only for mouse events, which I seldom use
+      ;;       use-file-dialog nil
+      ;;       use-short-answers t
+      inhibit-splash-screen t
+      inhibit-startup-screen nil
+      ;;       inhibit-x-resources t
+      inhibit-startup-echo-area-message user-login-name ; read the docstring
+      ;;       inhibit-startup-buffer-menu t)
+      )
+
+(setopt display-fill-column-indicator-column 80)
+(add-hook 'prog-mode-hook #'display-fill-column-indicator-mode)
+
+;; I do not use those graphical elements by default, but I do enable
+;; them from time-to-time for testing purposes or to demonstrate
+;; something.  NEVER tell a beginner to disable any of these.  They
+;; are helpful.
+;;(menu-bar-mode t)
+(scroll-bar-mode -1)
+;; (tool-bar-mode -1)
+
 (use-package emacs
   :custom
   ;; Support opening new minibuffers from inside existing minibuffers.
@@ -487,3 +538,5 @@
 (setq-default fill-column 78)
 (setq-default display-fill-column-indicator t)
 ;;(setq-default display-fill-column-indicator-character ?|)
+
+(use-package doom-themes)
