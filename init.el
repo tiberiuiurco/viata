@@ -475,9 +475,9 @@
 ;; them from time-to-time for testing purposes or to demonstrate
 ;; something.  NEVER tell a beginner to disable any of these.  They
 ;; are helpful.
-;;(menu-bar-mode t)
+(menu-bar-mode -1)
 (scroll-bar-mode -1)
-;; (tool-bar-mode -1)
+(tool-bar-mode -1)
 
 (use-package emacs
   :custom
