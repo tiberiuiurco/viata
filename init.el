@@ -1,4 +1,5 @@
 (require 'use-package)
+(package-initialize)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
 (setq use-package-always-ensure t
       use-package-expand-minimally t
@@ -8,11 +9,11 @@
   (add-to-list 'load-path (locate-user-emacs-file path)))
 
 (use-package org-tempo
-:ensure nil
-:config
-(add-to-list 'org-structure-template-alist '("sh" . "src shell"))
-(add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
-(add-to-list 'org-structure-template-alist '("py" . "src python")))
+  :ensure nil
+  :config
+  (add-to-list 'org-structure-template-alist '("sh" . "src shell"))
+  (add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
+  (add-to-list 'org-structure-template-alist '("py" . "src python")))
 
 (use-package vertico
   :custom
@@ -187,13 +188,19 @@
   :hook (eldoc-mode . eldoc-box-hover-mode)
   :config
   (global-set-key (kbd "C-h D") #'eldoc-box-help-at-point))
-  
- 
+
+
 (require 'flymake)
 
 (require 'org)
 (use-package org-modern
   :hook (org-mode . global-org-modern-mode))
+
+(electric-pair-mode t)
+(use-package rainbow-delimiters
+  :config
+  (add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
+  )
 
 (setq org-log-done 'time)
 (setq org-agenda-start-with-log-mode t)
@@ -284,7 +291,7 @@
                   ((org-agenda-overriding-header "Completed Tasks")
                    (org-agenda-skip-function '(org-agenda-skip-entry-if 'nottodo 'done))
                    (org-agenda-span 'week)))))
-	))
+        ))
 
 (setq org-agenda-prefix-format '((agenda . " %i %-12:c%?-12t%-6e% s")
                                  (todo . " %i %-12:c %-6e")
@@ -316,8 +323,8 @@
              (auto-revert-mode 1)))
 
 (use-package olivetti
- :hook (org-agenda-mode . olivetti-mode)
-)
+  :hook (org-agenda-mode . olivetti-mode)
+  )
 
 (use-package org-auto-tangle
   :defer t
@@ -415,8 +422,8 @@
   :config
   ;; Somewhere in your .emacs file
   (setq elfeed-feeds
-	'("https://protesilaos.com/master.xml"
-	  "https://planet.emacslife.com/atom.xml"))
+        '("https://protesilaos.com/master.xml"
+          "https://planet.emacslife.com/atom.xml"))
   )
 
 (load-theme 'modus-vivendi)
@@ -518,8 +525,8 @@
 (use-package denote
   :config
   (setq denote-directory (expand-file-name "~/testing/")
-	denote-known-keywords '("emacs" "denote" "testing")
-	denote-file-type 'text)
+        denote-known-keywords '("emacs" "denote" "testing")
+        denote-file-type 'text)
   (add-hook 'dired-mode-hook #'denote-dired-mode)
   :bind
   ("C-c d f" . denote-type)
