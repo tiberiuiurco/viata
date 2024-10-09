@@ -397,8 +397,8 @@ Perform actions in the minibuffer.
 ** ORG CONFIG
 #+begin_src emacs-lisp
   (require 'org)
-  ;;(use-package org-modern
-  ;;  :hook (org-mode . global-org-modern-mode))
+  (use-package org-modern
+    :hook (org-mode . global-org-modern-mode))
 
   (electric-pair-mode t)
   (use-package rainbow-delimiters
@@ -641,14 +641,14 @@ Set ~#+auto_tangle: t~ in the header of the file.
 #+end_src
 ** PROJECTILE
 #+begin_src emacs-lisp
-(use-package project)
-(use-package projectile
-  :config
-  (projectile-mode +1)
-  (setq projectile-project-search-path '(("~/Documents/Projects" . 1) "~/.emacs.d/" "~/Documents/Files/"))
-  ;; Recommended keymap prefix on Windows/Linux
-  (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
-  )
+  (use-package project)
+  (use-package projectile
+    :config
+    (projectile-mode +1)
+    (setq projectile-project-search-path '(("~/Documents/Projects" . 1) "~/.emacs.d/" "~/Documents/Files/"))
+    ;; Recommended keymap prefix on Windows/Linux
+    (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
+    )
 #+end_src
 * APPLICATIONS
 ** MAGIT
@@ -670,6 +670,11 @@ Set ~#+auto_tangle: t~ in the header of the file.
 #+begin_src emacs-lisp
   (use-package ef-themes)
   (load-theme 'ef-frost t)
+#+end_src
+** DOOM MODELINE
+#+begin_src emacs-lisp
+(use-package doom-modeline
+  :hook (after-init . doom-modeline-mode))
 #+end_src
 ** FONT
 #+begin_src emacs-lisp

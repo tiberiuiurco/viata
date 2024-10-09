@@ -354,8 +354,8 @@
   (embark-collect-mode . consult-preview-at-point-mode))
 
 (require 'org)
-;;(use-package org-modern
-;;  :hook (org-mode . global-org-modern-mode))
+(use-package org-modern
+  :hook (org-mode . global-org-modern-mode))
 
 (electric-pair-mode t)
 (use-package rainbow-delimiters
@@ -603,6 +603,9 @@
 
 (use-package ef-themes)
 (load-theme 'ef-frost t)
+
+(use-package doom-modeline
+  :hook (after-init . doom-modeline-mode))
 
 (set-face-attribute 'default nil
                     :font "Hack Nerd Font"
