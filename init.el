@@ -726,9 +726,77 @@
 (setq-default display-fill-column-indicator t)
 ;;(setq-default display-fill-column-indicator-character ?|)
 
-(use-package doom-themes)
-
 (use-package which-key
   :ensure t
   :config
   (which-key-mode))
+
+(defvar-keymap hakuna-prefix-map
+  :doc "My personal map."
+  "m" 'magit
+  "e" 'mu4e
+  )
+(keymap-set global-map "C-z" hakuna-prefix-map)
+
+;; This loads mu4e
+(add-to-list 'load-path "/usr/share/emacs/site-lisp/mu4e")
+(require 'mu4e)
+
+;; This tells mu4e what your email address is
+(setq user-mail-address  "tiberiu.iurco@proton.me")
+
+;; SMTP settings:
+(setq send-mail-function 'smtpmail-send-it)    ; should not be modified
+(setq smtpmail-smtp-server "127.0.0.1") ; host running SMTP server
+(setq smtpmail-smtp-service 1025)               ; SMTP service port number
+(setq smtpmail-stream-type 'starttls)          ; type of SMTP connections to use
+
+;; Mail folders:
+(setq mu4e-drafts-folder "/Drafts")
+(setq mu4e-sent-folder   "/Sent")
+(setq mu4e-trash-folder  "/Trash")
+
+;; The command used to get your emails (adapt this line, see section 2.3):
+(setq mu4e-get-mail-command "mbsync --config ~/.mbsyncrc protonmail")
+;; Further customization:
+(setq mu4e-html2text-command "w3m -T text/html" ; how to handle html-formatted emails
+      mu4e-update-interval 300                  ; seconds between each mail retrieval
+      mu4e-headers-auto-update t                ; avoid to type `g' to update
+      mu4e-view-show-images t                   ; show images in the view buffer
+      mu4e-compose-signature-auto-include nil   ; I don't want a message signature
+      mu4e-use-fancy-chars t)                   ; allow fancy icons for mail threads
+
+;; Do not reply to yourself:
+(setq mu4e-compose-reply-ignore-address '("no-?reply" "tiberiu.iurco@proton.me"))
+
+;; maildirs
+(setq mu4e-maildir-shortcuts
+  '( (:maildir "/Inbox"     :key  ?i)
+     (:maildir "/All mail"  :key  ?a)))
+
+;; signature
+;;(setq message-signature "bgc")
+
+(setq mu4e-bookmarks
+  '((:name  "Unread messages"
+     :query "flag:unread and maildir:/Inbox"
+     :key   ?u)
+    (:name  "Today's messages"
+     :query "date:today..now"
+     :key ?t)
+    (:name  "Last 7 days"
+     :query "date:7d..now"
+     :key ?7)
+    (:name  "Messages with Word docs"
+     :query "mime:application/msword OR mime:application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+     :key ?w)
+    (:name  "Messages with PDF"
+     :query "mime:application/pdf"
+     :key ?p)
+    (:name  "Messages with calendar event"
+     :query "mime:text/calendar"
+     :key ?e)
+    ))
+
+;; This fixes a frustrating bug, thanks @gnomon@mastodon.social
+(setq mu4e-change-filenames-when-moving t)
