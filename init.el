@@ -354,8 +354,8 @@
   (embark-collect-mode . consult-preview-at-point-mode))
 
 (require 'org)
-(use-package org-modern
-  :hook (org-mode . global-org-modern-mode))
+;;(use-package org-modern
+;;  :hook (org-mode . global-org-modern-mode))
 
 (electric-pair-mode t)
 (use-package rainbow-delimiters
@@ -577,6 +577,20 @@
   ("C-c n l" . consult-org-roam-forward-links)
   ("C-c n r" . consult-org-roam-search))
 
+(use-package nix-mode
+  :config
+  (add-to-list 'auto-mode-alist '("\\.nix\\'" . nix-mode))
+  )
+
+(use-package project)
+(use-package projectile
+  :config
+  (projectile-mode +1)
+  (setq projectile-project-search-path '(("~/Documents/Projects" . 1) "~/.emacs.d/" "~/Documents/Files/"))
+  ;; Recommended keymap prefix on Windows/Linux
+  (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
+  )
+
 (use-package magit)
 
 (use-package elfeed
@@ -587,7 +601,8 @@
           "https://planet.emacslife.com/atom.xml"))
   )
 
-(load-theme 'modus-vivendi)
+(use-package ef-themes)
+(load-theme 'ef-frost t)
 
 (set-face-attribute 'default nil
                     :font "Hack Nerd Font"
@@ -612,8 +627,8 @@
 
 (add-to-list 'default-frame-alist '(font . "Hack Nerd Font-14"))
 
-(set-frame-parameter nil 'alpha-background 70) ; For current frame
-(add-to-list 'default-frame-alist '(alpha-background . 70)) ; For all new frames henceforth
+(set-frame-parameter nil 'alpha-background 85) ; For current frame
+(add-to-list 'default-frame-alist '(alpha-background . 85)) ; For all new frames henceforth
 
 (setq frame-resize-pixelwise t
       ;;       frame-inhibit-implied-resize t
@@ -708,3 +723,8 @@
 ;;(setq-default display-fill-column-indicator-character ?|)
 
 (use-package doom-themes)
+
+(use-package which-key
+  :ensure t
+  :config
+  (which-key-mode))

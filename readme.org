@@ -3,6 +3,8 @@
 #+AUTHOR: Iurco Tiberiu-Iulian
 #+startup: content indent
 
+* DEPENDENCIES
+sudo pacman -S ttf-iosevka-nerd ttf-hack-nerd
 * PACKAGE MANAGER
 ** USE-PACKAGE
 Uses builtin ~use-package~ available for emacs > =29=.
@@ -212,7 +214,7 @@ Corfu + treesitter + flymake
 
   (require 'flymake)
 #+end_src
-** **** CONSULT
+** CONSULT
 Extends vertico functionality.
 
 ***** CONSULT INSTALLATION
@@ -395,8 +397,8 @@ Perform actions in the minibuffer.
 ** ORG CONFIG
 #+begin_src emacs-lisp
   (require 'org)
-  (use-package org-modern
-    :hook (org-mode . global-org-modern-mode))
+  ;;(use-package org-modern
+  ;;  :hook (org-mode . global-org-modern-mode))
 
   (electric-pair-mode t)
   (use-package rainbow-delimiters
@@ -628,7 +630,26 @@ Set ~#+auto_tangle: t~ in the header of the file.
     ("C-c n l" . consult-org-roam-forward-links)
     ("C-c n r" . consult-org-roam-search))
 #+end_src
-
+* PROGRAMMING
+** LANGUAGES
+*** NIX
+#+begin_src emacs-lisp
+  (use-package nix-mode
+    :config
+    (add-to-list 'auto-mode-alist '("\\.nix\\'" . nix-mode))
+    )
+#+end_src
+** PROJECTILE
+#+begin_src emacs-lisp
+(use-package project)
+(use-package projectile
+  :config
+  (projectile-mode +1)
+  (setq projectile-project-search-path '(("~/Documents/Projects" . 1) "~/.emacs.d/" "~/Documents/Files/"))
+  ;; Recommended keymap prefix on Windows/Linux
+  (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
+  )
+#+end_src
 * APPLICATIONS
 ** MAGIT
 #+begin_src emacs-lisp
@@ -647,7 +668,8 @@ Set ~#+auto_tangle: t~ in the header of the file.
 * UI
 ** THEME
 #+begin_src emacs-lisp
-  (load-theme 'modus-vivendi)
+  (use-package ef-themes)
+  (load-theme 'ef-frost t)
 #+end_src
 ** FONT
 #+begin_src emacs-lisp
@@ -676,8 +698,8 @@ Set ~#+auto_tangle: t~ in the header of the file.
 #+end_src
 ** TRANSPARENCY
 #+begin_src emacs-lisp
-  (set-frame-parameter nil 'alpha-background 70) ; For current frame
-  (add-to-list 'default-frame-alist '(alpha-background . 70)) ; For all new frames henceforth
+  (set-frame-parameter nil 'alpha-background 85) ; For current frame
+  (add-to-list 'default-frame-alist '(alpha-background . 85)) ; For all new frames henceforth
 #+end_src
 ** EMACS UI
 #+begin_src emacs-lisp
@@ -786,4 +808,12 @@ Set ~#+auto_tangle: t~ in the header of the file.
 * TEST
 #+begin_src emacs-lisp
   (use-package doom-themes)
+#+end_src
+* KEYBINDINGS
+** WHICH-KEY
+#+begin_src emacs-lisp
+  (use-package which-key
+    :ensure t
+    :config
+    (which-key-mode))
 #+end_src
