@@ -669,7 +669,7 @@ Set ~#+auto_tangle: t~ in the header of the file.
 ** THEME
 #+begin_src emacs-lisp
   (use-package ef-themes)
-  (load-theme 'ef-frost t)
+  (load-theme 'ef-maris-dark t)
 #+end_src
 ** DOOM MODELINE
 #+begin_src emacs-lisp

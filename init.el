@@ -602,7 +602,7 @@
   )
 
 (use-package ef-themes)
-(load-theme 'ef-frost t)
+(load-theme 'ef-maris-dark t)
 
 (use-package doom-modeline
   :hook (after-init . doom-modeline-mode))
