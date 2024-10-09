@@ -385,7 +385,8 @@
 ;; mine
 (setq backup-directory-alist '((".*" . "~/.Trash")))
 (setq initial-major-mode 'org-mode)
-(setq initial-scratch-message "")
+(setq initial-scratch-message "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n")
+;;(setq inhibit-startup-echo-area-message "SOMETEXT")
 
 (setq org-directory (expand-file-name "~/Documents/Files/3 Org/gtd/"))
 (setq org-agenda-files `(,org-directory))
@@ -641,7 +642,7 @@
       ;;       use-file-dialog nil
       ;;       use-short-answers t
       inhibit-splash-screen t
-      inhibit-startup-screen nil
+      inhibit-startup-screen t
       ;;       inhibit-x-resources t
       inhibit-startup-echo-area-message user-login-name ; read the docstring
       ;;       inhibit-startup-buffer-menu t)
