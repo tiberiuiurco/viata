@@ -1,3 +1,22 @@
+(defmacro prot-emacs-keybind (keymap &rest definitions)
+  "Expand key binding DEFINITIONS for the given KEYMAP.
+DEFINITIONS is a sequence of string and command pairs."
+  (declare (indent 1))
+  (unless (zerop (% (length definitions) 2))
+    (error "Uneven number of key+command pairs"))
+  (let ((keys (seq-filter #'stringp definitions))
+        ;; We do accept nil as a definition: it unsets the given key.
+        (commands (seq-remove #'stringp definitions)))
+    `(when-let (((keymapp ,keymap))
+                (map ,keymap))
+       ,@(mapcar
+          (lambda (pair)
+            (let* ((key (car pair))
+                   (command (cdr pair)))
+              (unless (and (null key) (null command))
+                `(define-key map (kbd ,key) ,command))))
+          (cl-mapcar #'cons keys commands)))))
+
 (require 'use-package)
 (package-initialize)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
@@ -600,6 +619,11 @@
   (setq elfeed-feeds
         '("https://protesilaos.com/master.xml"
           "https://planet.emacslife.com/atom.xml"))
+  (setq elfeed-curl-max-connections 10)
+  (prot-emacs-keybind elfeed-search-mode-map
+    "w" #'elfeed-search-yank
+    "g" #'elfeed-update
+    "G" #'elfeed-search-update--force)       
   )
 
 (use-package ef-themes)
@@ -718,6 +742,8 @@
   ("C-c d z" . denote-signature)
   )
 
+(use-package tmr)
+
 (global-set-key (kbd "C-c o v") #'visible-mode)
 (global-visual-line-mode t)
 
@@ -735,6 +761,7 @@
   :doc "My personal map."
   "m" 'magit
   "e" 'mu4e
+  "f" 'elfeed
   )
 (keymap-set global-map "C-z" hakuna-prefix-map)
 
@@ -800,3 +827,47 @@
 
 ;; This fixes a frustrating bug, thanks @gnomon@mastodon.social
 (setq mu4e-change-filenames-when-moving t)
+
+;;;; Run commands in a popup frame
+
+(defun prot-window-delete-popup-frame (&rest _)
+  "Kill selected selected frame if it has parameter `prot-window-popup-frame'.
+Use this function via a hook."
+  (when (frame-parameter nil 'prot-window-popup-frame)
+    (delete-frame)))
+
+(defmacro prot-window-define-with-popup-frame (command)
+  "Define interactive function which calls COMMAND in a new frame.
+Make the new frame have the `prot-window-popup-frame' parameter."
+  `(defun ,(intern (format "prot-window-popup-%s" command)) ()
+     ,(format "Run `%s' in a popup frame with `prot-window-popup-frame' parameter.
+Also see `prot-window-delete-popup-frame'." command)
+     (interactive)
+     (let ((frame (make-frame '((prot-window-popup-frame . t)))))
+       (select-frame frame)
+       (switch-to-buffer " prot-window-hidden-buffer-for-popup-frame")
+       (condition-case nil
+           (call-interactively ',command)
+         ((quit error user-error)
+          (delete-frame frame))))))
+
+(declare-function org-capture "org-capture" (&optional goto keys))
+(defvar org-capture-after-finalize-hook)
+
+;;;###autoload (autoload 'prot-window-popup-org-capture "prot-window")
+(prot-window-define-with-popup-frame org-capture)
+
+(add-hook 'org-capture-after-finalize-hook #'prot-window-delete-popup-frame)
+
+(declare-function tmr "tmr" (time &optional description acknowledgep))
+(defvar tmr-timer-created-functions)
+
+;;;###autoload (autoload 'prot-window-popup-tmr "prot-window")
+(prot-window-define-with-popup-frame tmr)
+
+(add-hook 'tmr-timer-created-functions #'prot-window-delete-popup-frame)
+
+;;;; The emacsclient calls that need ot be bound to system-wide keys
+
+;; emacsclient -e '(prot-window-popup-org-capture)'
+;; emacsclient -e '(prot-window-popup-tmr)'
