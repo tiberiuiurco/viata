@@ -530,7 +530,7 @@ Perform actions in the minibuffer.
 ** OLIVETTI
 #+begin_src emacs-lisp
   (use-package olivetti
-    :hook (org-agenda-mode . olivetti-mode)
+    :hook ((org-agenda-mode org-mode) . olivetti-mode)
     )
 #+end_src
 ** ORG AUTO TANGLE

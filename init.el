@@ -484,7 +484,7 @@
              (auto-revert-mode 1)))
 
 (use-package olivetti
-  :hook (org-agenda-mode . olivetti-mode)
+  :hook ((org-agenda-mode org-mode) . olivetti-mode)
   )
 
 (use-package org-auto-tangle
